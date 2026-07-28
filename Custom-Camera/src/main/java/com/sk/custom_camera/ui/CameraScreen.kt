@@ -3,6 +3,7 @@ package com.sk.custom_camera.ui
 import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.ImageCaptureException
@@ -141,7 +142,10 @@ fun CameraCaptureContent(
             IconButton(onClick = { controller.cycleFlashMode() }) {
                 Icon(
                     imageVector = when (controller.flashMode) {
-                        CameraFlashMode.OFF -> Icons.Default.FlashOff
+                        CameraFlashMode.OFF -> {
+                            Toast.makeText(LocalContext.current,"Clicked", Toast.LENGTH_SHORT).show()
+                            Icons.Default.FlashOff
+                        }
                         CameraFlashMode.ON -> Icons.Default.FlashOn
                         CameraFlashMode.AUTO -> Icons.Default.FlashAuto
                     },

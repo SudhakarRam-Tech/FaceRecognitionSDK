@@ -16,7 +16,6 @@ android {
 
     defaultConfig {
         minSdk = 24
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -70,14 +69,17 @@ dependencies {
 
 }
 
+group = "com.sk.custom_camera"
+version = "1.0.1"
+
 afterEvaluate {
     publishing {
         publications {
             create<MavenPublication>("release") {
                 from(components["release"])
-                groupId = "com.sk.custom_camera"
+                groupId = project.group.toString()
                 artifactId = "face-recognition"
-                version = "1.0.0"
+                version = project.version.toString()
             }
         }
     }
