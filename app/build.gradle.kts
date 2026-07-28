@@ -66,5 +66,5 @@ dependencies {
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.compose.material.icons.extended)
 
-    implementation(project(":Custom-Camera"))
+    //implementation(project(":Custom-Camera"))
 }
