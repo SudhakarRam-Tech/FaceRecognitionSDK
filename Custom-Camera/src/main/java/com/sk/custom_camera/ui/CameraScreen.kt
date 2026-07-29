@@ -62,6 +62,7 @@ import org.w3c.dom.Text
 @Composable
 fun CameraScreen(
     modifier: Modifier = Modifier,
+    enablePreview: Boolean = true,
     onImageCaptured: (Uri) -> Unit = {},
     onError: (ImageCaptureException) -> Unit = {},
     onPermissionDenied: () -> Unit = {}
@@ -86,6 +87,7 @@ fun CameraScreen(
     Box(modifier = modifier.fillMaxSize()) {
         if (hasPermission) {
             CameraCaptureContent(
+                enablePreview = enablePreview,
                 onImageCaptured = onImageCaptured,
                 onError = onError
             )
@@ -119,13 +121,32 @@ private fun isCameraPermissionGranted(context: android.content.Context): Boolean
 @Composable
 fun CameraCaptureContent(
     modifier: Modifier = Modifier,
+    enablePreview: Boolean = true,
     onImageCaptured: (Uri) -> Unit = {},
     onError: (ImageCaptureException) -> Unit = {}
 ) {
     val context = LocalContext.current
     val controller = rememberCameraXController()
 
+    // Holds the just-captured photo's Uri while the user reviews it.
+    // Null = show the live camera; non-null = show PhotoPreviewScreen.
+    var pendingPreviewUri by remember { mutableStateOf<Uri?>(null) }
+
     Box(modifier = modifier.fillMaxSize()) {
+        val previewUri = pendingPreviewUri
+        if (previewUri != null) {
+            PhotoPreviewScreen(
+                imageUri = previewUri,
+                onRetake = { pendingPreviewUri = null },
+                onConfirm = { uri ->
+                    pendingPreviewUri = null
+                    onImageCaptured(uri)
+                },
+                modifier = Modifier.fillMaxSize()
+            )
+            return@Box
+        }
+
         CameraPreview(
             controller = controller,
             modifier = Modifier.fillMaxSize()
