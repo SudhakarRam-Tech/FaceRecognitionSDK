@@ -70,7 +70,7 @@ dependencies {
 }
 
 group = "com.sk.custom_camera"
-version = "1.0.1"
+version = "1.0.2"
 
 afterEvaluate {
     publishing {
